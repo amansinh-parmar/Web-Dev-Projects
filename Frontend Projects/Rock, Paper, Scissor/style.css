@@ -29,10 +29,11 @@
 .title{
     background-color: #081b31;
     color: #fff;
-    height: 5rem;
-    line-height: 5rem;
+    height: 7rem;
+    line-height: 7rem;
     text-align: center;
     font-weight: 800;
+    font-size: 4.2rem;
 }
 
 .choice{
