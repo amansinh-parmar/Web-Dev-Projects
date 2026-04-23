@@ -2,11 +2,9 @@ import React from "react";
 
 const App = () => {
   return (
-    <>
-      <div className="text-4xl text-center">
-        <h2 className="text-purple-600">Task Task Manager</h2>
-      </div>
-    </>
+    <div className="text-purple-500 text-4xl text-center font-bold underline">
+      <div>Task Manager</div>
+    </div>
   );
 };
 
