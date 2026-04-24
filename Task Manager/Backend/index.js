@@ -12,14 +12,14 @@ mongoose
     console.log("Database is Connected");
   })
   .catch((err) => {
-    console.log("Opps, Database Error", err.message);
+    console.log("Opps, Database Error\n", err.message);
   });
 const app = express();
 
 // Middleware to handle cors
 app.use(
   cors({
-    origin: process.env.FONT_END_URL || "http://localhost:5173",
+    origin: process.env.FONTEND_URL || "http://localhost:5173",
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
