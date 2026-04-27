@@ -3,6 +3,8 @@ import dotenv from "dotenv";
 import cors from "cors";
 import mongoose from "mongoose";
 
+import authRoutes from "./routes/auth.route.js";
+
 dotenv.config();
 
 // Connect Mongoose
@@ -35,3 +37,5 @@ app.get("/", (req, res) => {
 app.listen(3000, () => {
   console.log("Server Loging on Port: 3000");
 });
+
+app.use("/api/auth", authRoutes);
