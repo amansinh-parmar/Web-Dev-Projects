@@ -5,6 +5,8 @@ import mongoose from "mongoose";
 
 import authRoutes from "./routes/auth.route.js";
 
+import cookieParser from "cookie-parser";
+
 dotenv.config();
 
 // Connect Mongoose
@@ -30,12 +32,14 @@ app.use(
 // Middleware to handle JSON object in req body
 app.use(express.json());
 
+app.use(cookieParser());
+
 app.get("/", (req, res) => {
   res.send("Hello, Welcome to Task Manager.\n Here is your Backend Setup..!!");
 });
 
 app.listen(3000, () => {
-  console.log("Server Loging on Port: 3000");
+  console.log("Server Running on Port: 3000");
 });
 
 app.use("/api/auth", authRoutes);
