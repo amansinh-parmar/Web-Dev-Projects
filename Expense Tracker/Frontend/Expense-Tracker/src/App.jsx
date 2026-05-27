@@ -1,20 +1,28 @@
-import { useState } from "react";
-import DailyUpdate from "../pages/DailyUpdate";
-import "./index.css";
+import React from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Tab from "./Tab";
+import AddExpense from "./pages/AddExpense";
+import Setting from "./pages/Setting";
 
 function App() {
-  const [count, setCount] = useState(0);
-
   return (
-    <>
-      <div className="text-center bg-purple-500 p-2">
-        <h1 className="text-lg text-white tracking-widest font-bold  text-bold">
-          Hello Developer
-        </h1>
-      </div>
+    <BrowserRouter>
+      <div className="flex">
+        {/* Sidebar */}
+        <Tab />
 
-      <DailyUpdate />
-    </>
+        {/* Main content area */}
+        <div className="flex-1">
+          <Routes>
+            <Route path="/add-expense" element={<AddExpense />} />
+          </Routes>
+
+          <Routes>
+            <Route path="/setting" element={<Setting />} />
+          </Routes>
+        </div>
+      </div>
+    </BrowserRouter>
   );
 }
 
