@@ -1,5 +1,5 @@
-from flask import Flask, request, jsonify
-from flask_cors import CORS
+from flask import Flask, request, jsonify  # type: ignore[import]
+from flask_cors import CORS  # type: ignore[import]
 import sqlite3
 
 app = Flask(__name__)
