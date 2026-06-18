@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template
+from flask import Flask, jsonify, request  # type: ignore[import]
 from flask_cors import CORS  # type: ignore[import]
 import sqlite3
 

@@ -61,7 +61,7 @@ const AddExpense = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-gray-100 p-4">
+    <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-blue-50 to-gray-100 p-4">
 
       {/* ================= EXPENSE CARD ================= */}
       <div className="w-full max-w-lg bg-white shadow-2xl rounded-2xl p-6 md:p-8">
