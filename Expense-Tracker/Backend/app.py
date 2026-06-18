@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify  # type: ignore[import]
+from flask import Flask, jsonify, request, render_template
 from flask_cors import CORS  # type: ignore[import]
 import sqlite3
 
@@ -14,7 +14,6 @@ def connect_db():
 
 
 # ================= HELPER FUNCTION =================
-
 def row_to_dict(row):
     return {
         "id": row["id"],
@@ -25,10 +24,11 @@ def row_to_dict(row):
         "note": row["note"]
     }
 
-# ================= GET ALL EXPENSES =================
 
+# ================= GET ALL EXPENSES =================
 @app.route("/expenses", methods=["GET"])
 def get_expenses():
+    print("GET /expenses called")
 
     conn = connect_db()
     cursor = conn.cursor()
@@ -39,34 +39,58 @@ def get_expenses():
     conn.close()
 
     return jsonify([dict(row) for row in rows])
-
-
 # ================= ADD EXPENSE =================
 
 @app.route("/add-expense", methods=["POST"])
 def add_expense():
 
-    data = request.get_json()
+    print("=" * 50)
+    print("POST /add-expense called")
 
-    conn = connect_db()
-    cursor = conn.cursor()
+    try:
 
-    cursor.execute("""
-        INSERT INTO expenses (title, amount, category, date, note)
-        VALUES (?, ?, ?, ?, ?)
-    """, (
-        data.get("title"),
-        data.get("amount"),
-        data.get("category"),
-        data.get("date"),
-        data.get("note")
-    ))
+        data = request.get_json()
 
-    conn.commit()
-    conn.close()
+        print("DATA:", data)
 
-    return jsonify({"message": "Expense added"})
+        title = data.get("title")
+        amount = data.get("amount")
+        category = data.get("category")
+        date = data.get("date")
+        note = data.get("note", "")
 
+        print(title, amount, category, date)
+
+        conn = connect_db()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            INSERT INTO expenses
+            (title, amount, category, date, note)
+            VALUES (?, ?, ?, ?, ?)
+        """, (
+            title,
+            float(amount),
+            category,
+            date,
+            note
+        ))
+
+        conn.commit()
+
+        print("INSERT SUCCESS")
+
+        return jsonify({
+            "message": "Expense added successfully"
+        }), 201
+
+    except Exception as e:
+
+        print("ERROR:", repr(e))
+
+        return jsonify({
+            "error": str(e)
+        }), 500
 
 # ================= DELETE EXPENSE =================
 
@@ -120,16 +144,25 @@ def update_expense(id):
     conn = connect_db()
     cursor = conn.cursor()
 
+    cursor.execute(
+        "SELECT id FROM expenses WHERE id=?",
+        (id,)
+    )
+
+    if cursor.fetchone() is None:
+        conn.close()
+        return jsonify({"error": "Expense not found"}), 404
+
     cursor.execute("""
         UPDATE expenses
-        SET title = ?, amount = ?, category = ?, date = ?, note = ?
-        WHERE id = ?
+        SET title=?, amount=?, category=?, date=?, note=?
+        WHERE id=?
     """, (
-        data.get("title"),
-        data.get("amount"),
-        data.get("category"),
-        data.get("date"),
-        data.get("note"),
+        data["title"],
+        data["amount"],
+        data["category"],
+        data["date"],
+        data["note"],
         id
     ))
 
@@ -150,6 +183,42 @@ def clear_expenses():
 
     return jsonify({"message": "All expenses deleted"})
 
+# ================= Create Database Table =================
+def init_db():
+    conn = connect_db()
+    cursor = conn.cursor()
+
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS expenses (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        title TEXT NOT NULL,
+        amount REAL NOT NULL,
+        category TEXT,
+        date TEXT,
+        note TEXT
+    )
+    """)
+
+    conn.commit()
+    conn.close()
+
+
+# ================= ERROR LOGGING =================
+@app.errorhandler(404)
+def not_found(e):
+    return jsonify({
+        "error": "Route not found",
+        "requested_url": request.url
+    }), 404
+
+
+# ================= HOME ROUTE =================
+@app.route("/", methods=["GET"])
+def home():
+    return jsonify({
+        "message": "Expense Tracker API Running"
+    })
 # ================= RUN SERVER =================
 if __name__ == "__main__":
-    app.run(debug=True)
+    init_db()
+    app.run(host="0.0.0.0", port=5000, debug=True)

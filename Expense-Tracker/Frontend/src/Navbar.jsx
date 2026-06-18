@@ -9,8 +9,8 @@ const Navbar = () => {
   const isActive = (path) => location.pathname === path;
 
   return (
-    // <div className="w-64 min-h-screen bg-gradient-to-b from-indigo-700 via-blue-700 to-blue-900 text-white flex flex-col p-5 shadow-xl">
-    <div className="w-full md:w-64 md:min-h-screen bg-gradient-to-b from-indigo-700 via-blue-700 to-blue-900 text-white flex md:flex-col flex-row p-3 md:p-5 shadow-xl">
+    // <div className="w-64 min-h-screen bg-linear-to-b from-indigo-700 via-blue-700 to-blue-900 text-white flex flex-col p-5 shadow-xl">
+    <div className="w-full md:w-64 md:min-h-screen bg-linear-to-b from-indigo-700 via-blue-700 to-blue-900 text-white flex md:flex-col flex-row p-3 md:p-5 shadow-xl">
       {/* ================= BRAND ================= */}
       <h2 className="text-2xl font-extrabold flex items-center gap-3 mb-10 mt-4">
         <FaWallet className="text-emerald-300" />

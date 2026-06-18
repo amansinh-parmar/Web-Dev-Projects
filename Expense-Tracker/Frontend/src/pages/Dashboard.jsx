@@ -74,7 +74,14 @@ const Dashboard = () => {
     value,
   }));
 
-  const COLORS = ["#6366F1", "#22C55E", "#F59E0B", "#EF4444", "#06B6D4"];
+  // const COLORS = ["#6366F1", "#22C55E", "#F59E0B", "#EF4444", "#06B6D4"];
+  const CATEGORY_COLORS = {
+    Food: "#F59E0B",
+    Travel: "#22C55E",
+    Shopping: "#6366F1",
+    Bills: "#EF4444",
+    Entertainment: "#06B6D4",
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 p-6">
@@ -111,8 +118,11 @@ const Dashboard = () => {
                 nameKey="name"
                 outerRadius={70}
               >
-                {categoryData.map((_, index) => (
-                  <Cell key={index} fill={COLORS[index % COLORS.length]} />
+                {categoryData.map((entry) => (
+                  <Cell
+                    key={entry.name}
+                    fill={CATEGORY_COLORS[entry.name] || "#94A3B8"}
+                  />
                 ))}
               </Pie>
               <Tooltip />
